@@ -124,6 +124,47 @@ describe("Public Queries & Translation Fallback Engine", () => {
     });
   });
 
+  describe("getPublicProjects", () => {
+    it("returns all published projects", async () => {
+      vi.mocked(db.project.findMany).mockResolvedValueOnce([
+        {
+          id: "p1",
+          slug: "test-slug",
+          featured: false,
+          order: 1,
+          repoUrl: null,
+          liveUrl: null,
+          tags: [],
+          media: [],
+          translations: [{ locale: "en", title: "Test", summary: "Summary", caseStudy: "Case", metricsJson: [] }],
+        } as any,
+      ]);
+
+      const projects = await getPublicProjects("en");
+      expect(projects).toHaveLength(1);
+      expect(projects[0].slug).toBe("test-slug");
+    });
+  });
+
+  describe("getPublicSiteSettings", () => {
+    it("returns configured settings or default fallback", async () => {
+      vi.mocked(db.siteSettings.findUnique).mockResolvedValueOnce({
+        id: "global-settings",
+        siteTitle: "Custom Title",
+        metaDescription: "Custom Desc",
+        defaultLocale: "en",
+        contactEmail: "custom@realm.io",
+        githubUrl: null,
+        linkedinUrl: null,
+        twitterUrl: null,
+        updatedAt: new Date(),
+      });
+
+      const settings = await getPublicSiteSettings();
+      expect(settings.siteTitle).toBe("Custom Title");
+    });
+  });
+
   describe("getPublicProjectBySlug", () => {
     it("returns null when project is not found or is in draft status", async () => {
       vi.mocked(db.project.findFirst).mockResolvedValueOnce(null);

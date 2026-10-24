@@ -7,10 +7,7 @@ import {
   Sparkles,
   Compass,
   Boxes,
-  Scroll,
-  Layers,
   ArrowRight,
-  Eye,
   Terminal,
 } from "lucide-react";
 import {
@@ -19,6 +16,7 @@ import {
   getPublicFeaturedProjects,
   generatePublicMetadata,
 } from "@/services/public-queries";
+import { WorldSceneContainer } from "@/components/world/WorldSceneContainer";
 
 export const revalidate = 60; // ISR cache profile with on-demand invalidation
 
@@ -39,7 +37,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   setRequestLocale(locale);
 
   const t = await getTranslations("Hero");
-  const tw = await getTranslations("World");
   const tp = await getTranslations("Projects");
   const tc = await getTranslations("Common");
 
@@ -95,77 +92,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         </div>
       </section>
 
-      {/* 3D World Gateway & Accessible Diorama Portals */}
+      {/* 3D World Gateway & Interactive Archipelago Diorama */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-xl border border-[var(--realm-border)] bg-[var(--realm-bg-card)] p-6 shadow-xl sm:p-8">
-          <div className="mb-6 flex flex-col justify-between gap-4 border-b border-[var(--realm-border)]/80 pb-4 sm:flex-row sm:items-center">
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[var(--realm-amber)]" />
-                <h2 className="text-base font-semibold text-[var(--realm-text-primary)]">
-                  {worldScene?.name || tw("loadingScene")}
-                </h2>
-              </div>
-              <p className="mt-1 text-xs text-[var(--realm-text-muted)]">{tw("hintInteraction")}</p>
-            </div>
-            <Badge variant="moss" className="self-start font-mono text-xs sm:self-auto">
-              <Eye className="h-3.5 w-3.5" />
-              <span>INTERACTIVE DIORAMA STAGE</span>
-            </Badge>
-          </div>
-
-          {/* Diorama Stage & Portals Navigation */}
-          <div className="relative flex min-h-[340px] flex-col items-center justify-center rounded-lg border border-dashed border-[var(--realm-border-light)] bg-[var(--realm-bg)]/80 p-8 text-center sm:min-h-[400px]">
-            <div className="relative mb-6">
-              <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[var(--realm-amber)]/40 bg-[var(--realm-bg-surface)] shadow-lg">
-                <Compass className="h-10 w-10 animate-spin text-[var(--realm-amber)] [animation-duration:12s]" />
-              </div>
-              <div className="pointer-events-none absolute -inset-2 rounded-2xl bg-[var(--realm-amber)]/10 blur-md" />
-            </div>
-
-            <h3 className="text-lg font-medium text-[var(--realm-text-primary)] font-serif">
-              {worldScene?.name || "Astral Archipelago"}
-            </h3>
-            <p className="mt-2 max-w-md text-xs leading-relaxed text-[var(--realm-text-secondary)]">
-              {tw("accessibleNotice")}
-            </p>
-
-            {/* Real Portals from Database */}
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-              {worldScene?.portals && worldScene.portals.length > 0 ? (
-                worldScene.portals.map((portal) => (
-                  <Link key={portal.id} href={portal.targetRoute as any}>
-                    <Button variant="secondary" size="sm" className="gap-1.5 font-mono text-xs">
-                      <span className="text-[var(--realm-amber)]">[{portal.posX.toFixed(0)}, {portal.posZ.toFixed(0)}]</span>
-                      <span>{portal.label}</span>
-                    </Button>
-                  </Link>
-                ))
-              ) : (
-                <>
-                  <Link href="/projects">
-                    <Button variant="secondary" size="sm" className="gap-1.5 font-mono text-xs">
-                      <Boxes className="h-3.5 w-3.5 text-[var(--realm-amber)]" />
-                      <span>Portal: Creations</span>
-                    </Button>
-                  </Link>
-                  <Link href="/about">
-                    <Button variant="secondary" size="sm" className="gap-1.5 font-mono text-xs">
-                      <Scroll className="h-3.5 w-3.5 text-[var(--realm-amber)]" />
-                      <span>Portal: Chronicle</span>
-                    </Button>
-                  </Link>
-                  <Link href="/experience">
-                    <Button variant="secondary" size="sm" className="gap-1.5 font-mono text-xs">
-                      <Layers className="h-3.5 w-3.5 text-[var(--realm-amber)]" />
-                      <span>Portal: Expeditions</span>
-                    </Button>
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+        <WorldSceneContainer
+          sceneName={worldScene?.name || "Astral Archipelago"}
+          fogColor={worldScene?.fogColor}
+          fogDensity={worldScene?.fogDensity}
+          sunLightIntensity={worldScene?.sunLightIntensity}
+          ambientLightIntensity={worldScene?.ambientLightIntensity}
+          sunLightColor={worldScene?.sunLightColor}
+          ambientLightColor={worldScene?.ambientLightColor}
+          portals={worldScene?.portals}
+        />
       </section>
 
       {/* Featured Works Section (Connected to Real Published Database Records) */}
