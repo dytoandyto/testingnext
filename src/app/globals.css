@@ -175,3 +175,38 @@ body {
     filter: drop-shadow(0 0 12px var(--realm-amber));
   }
 }
+
+/* Ethereal Shiny Text / Shimmer (React Bits / 21st.dev adapted) */
+@keyframes shinyText {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
+.shiny-text {
+  background: linear-gradient(
+    110deg,
+    var(--realm-text-secondary) 25%,
+    var(--realm-amber-glow) 50%,
+    var(--realm-text-secondary) 75%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shinyText 5s linear infinite;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shiny-text {
+    animation: none;
+    color: var(--realm-amber);
+    background: none;
+    -webkit-background-clip: unset;
+  }
+}
+

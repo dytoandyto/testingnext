@@ -25,6 +25,9 @@ import {
   Check,
   Loader2,
   Sparkles,
+  Eye,
+  EyeOff,
+  RotateCcw,
 } from "lucide-react";
 
 interface PresetItem {
@@ -49,6 +52,7 @@ export function ThemeManager({ initialPresets }: { initialPresets: PresetItem[] 
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [activatingId, setActivatingId] = React.useState<string | null>(null);
+  const [previewingId, setPreviewingId] = React.useState<string | null>(null);
 
   const form = useForm({
     resolver: zodResolver(ThemePresetFormSchema),
@@ -113,6 +117,34 @@ export function ThemeManager({ initialPresets }: { initialPresets: PresetItem[] 
     }
   };
 
+  const handlePreview = (preset: PresetItem) => {
+    if (typeof document !== "undefined") {
+      document.documentElement.style.setProperty("--realm-bg", preset.bgPrimary);
+      document.documentElement.style.setProperty("--realm-bg-surface", preset.bgSurface);
+      document.documentElement.style.setProperty("--realm-bg-card", preset.bgCard);
+      document.documentElement.style.setProperty("--realm-border", preset.border);
+      document.documentElement.style.setProperty("--realm-amber", preset.amber);
+      document.documentElement.style.setProperty("--realm-moss", preset.moss);
+      document.documentElement.style.setProperty("--realm-clay", preset.clay);
+      document.documentElement.style.setProperty("--realm-parchment", preset.parchment);
+      setPreviewingId(preset.id);
+    }
+  };
+
+  const handleClearPreview = () => {
+    if (typeof document !== "undefined") {
+      document.documentElement.removeAttribute("style");
+      setPreviewingId(null);
+    }
+  };
+
+  const handleResetToDefault = async () => {
+    const defaultPreset = presets.find((p) => p.isDefault) || presets[0];
+    if (!defaultPreset) return;
+    await handleActivate(defaultPreset.id, defaultPreset.name);
+    handleClearPreview();
+  };
+
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Delete theme preset "${name}"?`)) return;
     try {
@@ -135,7 +167,21 @@ export function ThemeManager({ initialPresets }: { initialPresets: PresetItem[] 
         </Alert>
       )}
 
-      <div className="flex items-center justify-between">
+      {previewingId && (
+        <Alert variant="default" className="border-[var(--realm-amber)] bg-[var(--realm-amber)]/10 text-[var(--realm-amber)] flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Eye className="h-4 w-4" />
+            <AlertDescription className="font-mono text-xs">
+              Live Preview Active: Experiencing client-side CSS token override. Changes not saved globally until activated.
+            </AlertDescription>
+          </div>
+          <Button variant="ghost" size="sm" onClick={handleClearPreview} className="font-mono text-xs h-7">
+            Clear Preview
+          </Button>
+        </Alert>
+      )}
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-2">
           <Palette className="h-5 w-5 text-[var(--realm-amber)]" />
           <span className="text-sm font-semibold">Handcrafted Theme Presets</span>
@@ -144,15 +190,28 @@ export function ThemeManager({ initialPresets }: { initialPresets: PresetItem[] 
           </span>
         </div>
 
-        <Button
-          onClick={openCreateDialog}
-          variant="primary"
-          size="sm"
-          className="gap-1.5 font-mono text-xs shadow-md"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Forge New Palette</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleResetToDefault}
+            variant="secondary"
+            size="sm"
+            className="gap-1.5 font-mono text-xs"
+            title="Reset to default system palette"
+          >
+            <RotateCcw className="h-3.5 w-3.5 text-[var(--realm-amber)]" />
+            <span>Reset to Default</span>
+          </Button>
+
+          <Button
+            onClick={openCreateDialog}
+            variant="primary"
+            size="sm"
+            className="gap-1.5 font-mono text-xs shadow-md"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Forge New Palette</span>
+          </Button>
+        </div>
       </div>
 
       {/* Preset Grid */}
@@ -216,22 +275,48 @@ export function ThemeManager({ initialPresets }: { initialPresets: PresetItem[] 
 
                 {/* Actions */}
                 <div className="flex items-center justify-between pt-2 border-t border-[var(--realm-border)]/50">
-                  {preset.active ? (
-                    <span className="font-mono text-xs text-[var(--realm-amber)] flex items-center gap-1">
-                      <Sparkles className="h-3 w-3" />
-                      <span>Live on Showcase</span>
-                    </span>
-                  ) : (
+                  <div className="flex items-center gap-2">
+                    {preset.active ? (
+                      <span className="font-mono text-xs text-[var(--realm-amber)] flex items-center gap-1">
+                        <Sparkles className="h-3 w-3" />
+                        <span>Live on Showcase</span>
+                      </span>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        disabled={isActivating}
+                        onClick={() => handleActivate(preset.id, preset.name)}
+                        className="font-mono text-xs"
+                      >
+                        {isActivating ? <Loader2 className="h-3 w-3 animate-spin" /> : "Set As Active"}
+                      </Button>
+                    )}
+
                     <Button
-                      variant="secondary"
+                      variant="ghost"
                       size="sm"
-                      disabled={isActivating}
-                      onClick={() => handleActivate(preset.id, preset.name)}
-                      className="font-mono text-xs"
+                      onClick={() =>
+                        previewingId === preset.id
+                          ? handleClearPreview()
+                          : handlePreview(preset)
+                      }
+                      className="font-mono text-xs gap-1 h-8 px-2"
+                      title="Preview this palette locally"
                     >
-                      {isActivating ? <Loader2 className="h-3 w-3 animate-spin" /> : "Set As Active"}
+                      {previewingId === preset.id ? (
+                        <>
+                          <EyeOff className="h-3 w-3 text-[var(--realm-clay)]" />
+                          <span className="text-[var(--realm-clay)]">Exit</span>
+                        </>
+                      ) : (
+                        <>
+                          <Eye className="h-3 w-3 text-[var(--realm-amber)]" />
+                          <span>Preview</span>
+                        </>
+                      )}
                     </Button>
-                  )}
+                  </div>
 
                   {!preset.active && !preset.isDefault && (
                     <Button

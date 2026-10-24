@@ -17,6 +17,9 @@ import {
   generatePublicMetadata,
 } from "@/services/public-queries";
 import { WorldSceneContainer } from "@/components/world/WorldSceneContainer";
+import { ShinyText } from "@/components/ui/shiny-text";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export const revalidate = 60; // ISR cache profile with on-demand invalidation
 
@@ -61,9 +64,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                 <Sparkles className="h-3 w-3" />
                 <span>{t("greeting")}</span>
               </Badge>
-              <span className="font-mono text-xs text-[var(--realm-text-muted)]">
+              <ShinyText className="font-mono text-xs">
                 [SECTOR: 01 // INDIE DIORAMA]
-              </span>
+              </ShinyText>
             </div>
 
             <h1 className="text-3xl font-bold tracking-tight text-[var(--realm-text-primary)] sm:text-5xl lg:text-6xl font-serif">
@@ -108,20 +111,22 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       {/* Featured Works Section (Connected to Real Published Database Records) */}
       <section className="mx-auto max-w-7xl space-y-6 px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-[var(--realm-text-primary)] font-serif">
-              {tp("featured")}
-            </h2>
-            <p className="mt-1 text-sm text-[var(--realm-text-secondary)]">{tp("subtitle")}</p>
+        <ScrollReveal>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-[var(--realm-text-primary)] font-serif">
+                {tp("featured")}
+              </h2>
+              <p className="mt-1 text-sm text-[var(--realm-text-secondary)]">{tp("subtitle")}</p>
+            </div>
+            <Link href="/projects">
+              <Button variant="ghost" size="sm" className="gap-1 font-mono text-xs">
+                <span>{tc("viewAll")}</span>
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </Link>
           </div>
-          <Link href="/projects">
-            <Button variant="ghost" size="sm" className="gap-1 font-mono text-xs">
-              <span>{tc("viewAll")}</span>
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
-        </div>
+        </ScrollReveal>
 
         {featuredProjects.length === 0 ? (
           <div className="rounded-xl border border-dashed border-[var(--realm-border)] bg-[var(--realm-bg-card)] p-12 text-center">
@@ -142,67 +147,70 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {featuredProjects.map((project) => (
-              <Link
-                key={project.id}
-                href={`/projects/${project.slug}`}
-                className="group block"
-              >
-                <Card className="flex h-full flex-col transition-all duration-300 hover:border-[var(--realm-amber)]">
-                  {/* Media Preview or Fallback Icon */}
-                  <div className="relative flex h-48 items-center justify-center border-b border-[var(--realm-border)] bg-[var(--realm-bg-surface)] overflow-hidden">
-                    {project.media.length > 0 ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={project.media[0].url}
-                        alt={project.media[0].altText || project.title}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="flex flex-col items-center gap-2 font-mono text-xs text-[var(--realm-text-muted)]">
-                        <Terminal className="h-8 w-8 text-[var(--realm-amber)] transition-transform group-hover:scale-110" />
-                        <span>/{project.slug}</span>
+            {featuredProjects.map((project, idx) => (
+              <ScrollReveal key={project.id} delay={idx * 0.1}>
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="group block h-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--realm-amber)] rounded-xl"
+                >
+                  <SpotlightCard className="h-full">
+                    <Card className="flex h-full flex-col border-0 bg-transparent shadow-none">
+                      {/* Media Preview or Fallback Icon */}
+                      <div className="relative flex h-48 items-center justify-center border-b border-[var(--realm-border)] bg-[var(--realm-bg-surface)] overflow-hidden">
+                        {project.media.length > 0 ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={project.media[0].url}
+                            alt={project.media[0].altText || project.title}
+                            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="flex flex-col items-center gap-2 font-mono text-xs text-[var(--realm-text-muted)]">
+                            <Terminal className="h-8 w-8 text-[var(--realm-amber)] transition-transform group-hover:scale-110" />
+                            <span>/{project.slug}</span>
+                          </div>
+                        )}
+                        <div className="absolute top-3 right-3">
+                          <Badge variant="moss">FEATURED</Badge>
+                        </div>
                       </div>
-                    )}
-                    <div className="absolute top-3 right-3">
-                      <Badge variant="moss">FEATURED</Badge>
-                    </div>
-                  </div>
 
-                  <CardHeader className="flex-1">
-                    <div className="mb-1 flex items-center justify-between">
-                      <span className="font-mono text-[10px] text-[var(--realm-amber)]">
-                        /{project.slug}
-                      </span>
-                      {project.isFallbackLocale && (
-                        <span className="font-mono text-[9px] text-[var(--realm-text-muted)]">
-                          [EN]
-                        </span>
-                      )}
-                    </div>
-                    <CardTitle className="text-base transition-colors group-hover:text-[var(--realm-amber)] font-serif">
-                      {project.title}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2 mt-1">
-                      {project.summary}
-                    </CardDescription>
-                  </CardHeader>
+                      <CardHeader className="flex-1">
+                        <div className="mb-1 flex items-center justify-between">
+                          <span className="font-mono text-[10px] text-[var(--realm-amber)]">
+                            /{project.slug}
+                          </span>
+                          {project.isFallbackLocale && (
+                            <span className="font-mono text-[9px] text-[var(--realm-text-muted)]">
+                              [EN]
+                            </span>
+                          )}
+                        </div>
+                        <CardTitle className="text-base transition-colors group-hover:text-[var(--realm-amber)] font-serif">
+                          {project.title}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-2 mt-1">
+                          {project.summary}
+                        </CardDescription>
+                      </CardHeader>
 
-                  <CardContent className="pt-0">
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {project.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="default" className="text-[10px]">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-1 font-mono text-xs font-semibold text-[var(--realm-amber)] transition-transform group-hover:translate-x-1">
-                      <span>{tc("viewProject")}</span>
-                      <ArrowRight className="h-3.5 w-3.5" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
+                      <CardContent className="pt-0">
+                        <div className="flex flex-wrap gap-1.5 mb-3">
+                          {project.tags.slice(0, 3).map((tag) => (
+                            <Badge key={tag} variant="default" className="text-[10px]">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="flex items-center gap-1 font-mono text-xs font-semibold text-[var(--realm-amber)] transition-transform group-hover:translate-x-1">
+                          <span>{tc("viewProject")}</span>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </SpotlightCard>
+                </Link>
+              </ScrollReveal>
             ))}
           </div>
         )}

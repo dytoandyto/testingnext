@@ -1,7 +1,9 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Layers, Calendar, MapPin, Building2, CheckCircle2 } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { ShinyText } from "@/components/ui/shiny-text";
 import { getPublicExperiences, generatePublicMetadata } from "@/services/public-queries";
 
 export const revalidate = 60;
@@ -28,31 +30,35 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
   return (
     <div className="mx-auto max-w-5xl space-y-12 px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
-      <div className="space-y-4 border-b border-[var(--realm-border)] pb-8">
-        <Badge variant="amber" className="gap-1.5">
-          <Layers className="h-3.5 w-3.5" />
-          <span>PORTAL: EXPEDITIONS</span>
-        </Badge>
-        <h1 className="text-3xl font-bold tracking-tight text-[var(--realm-text-primary)] sm:text-4xl font-serif">
-          {t("title")}
-        </h1>
-        <p className="max-w-2xl text-base text-[var(--realm-text-secondary)]">{t("subtitle")}</p>
-      </div>
+      <ScrollReveal direction="down" duration={0.3}>
+        <div className="space-y-4 border-b border-[var(--realm-border)] pb-8">
+          <Badge variant="amber" className="gap-1.5">
+            <Layers className="h-3.5 w-3.5" />
+            <span>PORTAL: <ShinyText text="EXPEDITIONS" /></span>
+          </Badge>
+          <h1 className="text-3xl font-bold tracking-tight text-[var(--realm-text-primary)] sm:text-4xl font-serif">
+            {t("title")}
+          </h1>
+          <p className="max-w-2xl text-base text-[var(--realm-text-secondary)]">{t("subtitle")}</p>
+        </div>
+      </ScrollReveal>
 
       {/* Timeline */}
       {experiences.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-[var(--realm-border)] bg-[var(--realm-bg-card)] p-12 text-center max-w-xl mx-auto">
-          <Layers className="mx-auto h-10 w-10 text-[var(--realm-amber)] opacity-60 mb-3" />
-          <h3 className="font-serif text-lg text-[var(--realm-text-primary)]">
-            Expedition Ledger Empty
-          </h3>
-          <p className="mt-1 text-xs text-[var(--realm-text-muted)] leading-relaxed">
-            No professional epochs or career milestones published yet. Record verifiable positions through the Sanctuary CMS to chronicle them here.
-          </p>
-        </div>
+        <ScrollReveal direction="up" delay={0.1}>
+          <div className="rounded-xl border border-dashed border-[var(--realm-border)] bg-[var(--realm-bg-card)] p-12 text-center max-w-xl mx-auto">
+            <Layers className="mx-auto h-10 w-10 text-[var(--realm-amber)] opacity-60 mb-3" />
+            <h3 className="font-serif text-lg text-[var(--realm-text-primary)]">
+              Expedition Ledger Empty
+            </h3>
+            <p className="mt-1 text-xs text-[var(--realm-text-muted)] leading-relaxed">
+              No professional epochs or career milestones published yet. Record verifiable positions through the Sanctuary CMS to chronicle them here.
+            </p>
+          </div>
+        </ScrollReveal>
       ) : (
         <div className="relative ml-4 space-y-10 border-l border-[var(--realm-border-light)] pl-6 sm:ml-8 sm:pl-10">
-          {experiences.map((event) => {
+          {experiences.map((event, idx) => {
             const startStr = new Date(event.startDate).toLocaleDateString(undefined, {
               month: "short",
               year: "numeric",
@@ -67,14 +73,14 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
               : "";
 
             return (
-              <div key={event.id} className="group relative">
-                {/* Timeline Rune Node */}
-                <div className="absolute top-1.5 -left-[31px] flex h-7 w-7 items-center justify-center rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-card)] transition-colors group-hover:border-[var(--realm-amber)] sm:-left-[47px]">
-                  <span className="h-2 w-2 rounded-full bg-[var(--realm-amber)]" />
-                </div>
+              <ScrollReveal key={event.id} direction="up" delay={0.08 * idx}>
+                <div className="group relative">
+                  {/* Timeline Rune Node */}
+                  <div className="absolute top-1.5 -left-[31px] flex h-7 w-7 items-center justify-center rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-card)] transition-colors group-hover:border-[var(--realm-amber)] sm:-left-[47px]">
+                    <span className="h-2 w-2 rounded-full bg-[var(--realm-amber)]" />
+                  </div>
 
-                <Card className="transition-colors group-hover:border-[var(--realm-border-light)]">
-                  <CardHeader>
+                  <SpotlightCard className="transition-colors group-hover:border-[var(--realm-border-light)] p-6">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <Badge variant="amber" className="font-mono text-xs">
                         <Calendar className="h-3 w-3" />
@@ -94,24 +100,22 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
                       </div>
                     </div>
 
-                    <div className="mt-2 flex items-center justify-between">
-                      <CardTitle className="text-lg text-[var(--realm-text-primary)] font-serif">
+                    <div className="mt-3 flex items-center justify-between">
+                      <h3 className="text-lg font-bold text-[var(--realm-text-primary)] font-serif">
                         {event.role}
-                      </CardTitle>
+                      </h3>
                       {event.isFallbackLocale && (
                         <span className="font-mono text-[9px] text-[var(--realm-text-muted)]">
                           [EN]
                         </span>
                       )}
                     </div>
-                    <CardDescription className="mt-1 text-sm leading-relaxed">
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--realm-text-secondary)]">
                       {event.description}
-                    </CardDescription>
-                  </CardHeader>
+                    </p>
 
-                  {event.highlights.length > 0 && (
-                    <CardContent className="space-y-4 pt-0">
-                      <div className="space-y-2">
+                    {event.highlights.length > 0 && (
+                      <div className="mt-4 border-t border-[var(--realm-border)]/50 pt-4 space-y-2">
                         <h4 className="font-mono text-xs tracking-wider text-[var(--realm-amber)] uppercase">
                           Key Outcomes & Milestones
                         </h4>
@@ -127,10 +131,10 @@ export default async function ExperiencePage({ params }: { params: Promise<{ loc
                           ))}
                         </ul>
                       </div>
-                    </CardContent>
-                  )}
-                </Card>
-              </div>
+                    )}
+                  </SpotlightCard>
+                </div>
+              </ScrollReveal>
             );
           })}
         </div>

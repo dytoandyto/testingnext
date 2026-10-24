@@ -479,3 +479,38 @@ export function generatePublicMetadata({
     },
   };
 }
+
+export interface PublicThemeSettings {
+  id: string;
+  name: string;
+  isDefault?: boolean;
+  bgPrimary: string;
+  bgSurface: string;
+  bgCard: string;
+  border: string;
+  amber: string;
+  moss: string;
+  clay: string;
+  parchment: string;
+}
+
+/**
+ * Public Active Theme Preset
+ */
+export async function getPublicActiveTheme(): Promise<PublicThemeSettings | null> {
+  try {
+    const active = await db.themePreset.findFirst({
+      where: { active: true },
+    });
+    if (active) return active;
+
+    const defaultPreset = await db.themePreset.findFirst({
+      where: { isDefault: true },
+    });
+    return defaultPreset;
+  } catch (error) {
+    console.error("Failed to query public active theme preset:", error);
+    return null;
+  }
+}
+
