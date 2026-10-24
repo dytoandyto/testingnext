@@ -7,8 +7,28 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Let /admin and /api routes bypass next-intl locale prefixing
-  if (pathname.startsWith("/admin") || pathname.startsWith("/api")) {
+  // Protected /admin routes handling
+  if (pathname.startsWith("/admin")) {
+    if (pathname === "/admin/login") {
+      return NextResponse.next();
+    }
+
+    // Verify session token existence
+    const sessionCookie =
+      request.cookies.get("__Secure-authjs.session-token")?.value ||
+      request.cookies.get("authjs.session-token")?.value;
+
+    if (!sessionCookie) {
+      const loginUrl = new URL("/admin/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    return NextResponse.next();
+  }
+
+  // API endpoints bypass locale routing
+  if (pathname.startsWith("/api")) {
     return NextResponse.next();
   }
 
@@ -17,8 +37,8 @@ export default function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match all pathnames except /api, /_next, /_vercel, /admin or files with extensions
-    "/((?!api|_next|_vercel|admin|.*\\..*).*)",
+    // Match all pathnames except /_next, /_vercel or files with extensions
+    "/((?!_next|_vercel|.*\\..*).*)",
     "/",
   ],
 };

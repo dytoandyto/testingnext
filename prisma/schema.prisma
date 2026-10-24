@@ -1,0 +1,367 @@
+// Prisma Schema for Interactive 3D Indie Portfolio CMS
+// Neon PostgreSQL connection with versioned migrations and normalized bilingual entities
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// -----------------------------------------------------------------------------
+// Authentication Models (Auth.js v5 / NextAuth compliant)
+// -----------------------------------------------------------------------------
+
+enum Role {
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  passwordHash  String
+  role          Role      @default(ADMIN)
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// -----------------------------------------------------------------------------
+// Global Configuration & Theme Presets
+// -----------------------------------------------------------------------------
+
+model SiteSettings {
+  id             String   @id @default("global-settings")
+  siteTitle      String   @default("Indie Realm | Interactive 3D Portfolio CMS")
+  metaDescription String  @default("Interactive 3D indie game world portfolio and CMS.")
+  defaultLocale  String   @default("en")
+  contactEmail   String   @default("architect@realm.io")
+  githubUrl      String?
+  linkedinUrl    String?
+  twitterUrl     String?
+  updatedAt      DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model ThemePreset {
+  id         String   @id @default(cuid())
+  name       String   @unique
+  isDefault  Boolean  @default(false)
+  bgPrimary  String   @default("#0d131a")
+  bgSurface  String   @default("#141d27")
+  bgCard     String   @default("#182330")
+  border     String   @default("#2c3c4f")
+  amber      String   @default("#d99b38")
+  moss       String   @default("#3d634f")
+  clay       String   @default("#c45a3c")
+  parchment  String   @default("#e4dbc9")
+  active     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("theme_presets")
+}
+
+// -----------------------------------------------------------------------------
+// Content Publication Status & Slugs
+// -----------------------------------------------------------------------------
+
+enum PublicationStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+// -----------------------------------------------------------------------------
+// Projects & Bilingual Case Studies
+// -----------------------------------------------------------------------------
+
+model Project {
+  id        String            @id @default(cuid())
+  slug      String            @unique
+  featured  Boolean           @default(false)
+  order     Int               @default(0)
+  status    PublicationStatus @default(DRAFT)
+  repoUrl   String?
+  liveUrl   String?
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  translations ProjectTranslation[]
+  media        ProjectMedia[]
+  tags         ProjectTag[]
+
+  @@index([status, order])
+  @@map("projects")
+}
+
+model ProjectTranslation {
+  id          String   @id @default(cuid())
+  projectId   String
+  locale      String   // "en" | "id"
+  title       String
+  summary     String   @db.Text
+  caseStudy   String   @db.Text
+  metricsJson Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+  @@index([locale])
+  @@map("project_translations")
+}
+
+model ProjectTag {
+  id        String @id @default(cuid())
+  projectId String
+  name      String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, name])
+  @@index([name])
+  @@map("project_tags")
+}
+
+model ProjectMedia {
+  id           String   @id @default(cuid())
+  projectId    String
+  mediaAssetId String
+  order        Int      @default(0)
+  caption      String?
+  createdAt    DateTime @default(now())
+
+  project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Restrict)
+
+  @@index([projectId, order])
+  @@index([mediaAssetId])
+  @@map("project_media")
+}
+
+// -----------------------------------------------------------------------------
+// Professional Timeline & Experience
+// -----------------------------------------------------------------------------
+
+model Experience {
+  id           String            @id @default(cuid())
+  startDate    DateTime
+  endDate      DateTime?
+  isCurrent    Boolean           @default(false)
+  organization String
+  location     String
+  order        Int               @default(0)
+  status       PublicationStatus @default(PUBLISHED)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  translations ExperienceTranslation[]
+
+  @@index([status, order])
+  @@map("experiences")
+}
+
+model ExperienceTranslation {
+  id             String   @id @default(cuid())
+  experienceId   String
+  locale         String   // "en" | "id"
+  role           String
+  description    String   @db.Text
+  highlightsJson Json?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  experience Experience @relation(fields: [experienceId], references: [id], onDelete: Cascade)
+
+  @@unique([experienceId, locale])
+  @@index([locale])
+  @@map("experience_translations")
+}
+
+// -----------------------------------------------------------------------------
+// Skills & Competencies
+// -----------------------------------------------------------------------------
+
+model SkillCategory {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  order     Int      @default(0)
+  iconName  String   @default("Globe")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  skills Skill[]
+
+  @@index([order])
+  @@map("skill_categories")
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  categoryId  String
+  name        String
+  proficiency Int      @default(80) // 0 - 100
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  category SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, name])
+  @@index([categoryId, order])
+  @@map("skills")
+}
+
+// -----------------------------------------------------------------------------
+// Cloudinary Media Asset Registry
+// -----------------------------------------------------------------------------
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  publicId  String   @unique
+  secureUrl String
+  format    String
+  width     Int
+  height    Int
+  bytes     Int
+  altText   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectMedia ProjectMedia[]
+
+  @@map("media_assets")
+}
+
+// -----------------------------------------------------------------------------
+// 3D World Scene & Portals
+// -----------------------------------------------------------------------------
+
+model WorldScene {
+  id                    String   @id @default("default-scene")
+  name                  String   @default("Astral Archipelago")
+  isDefault             Boolean  @default(true)
+  fogColor              String   @default("#0d131a")
+  fogDensity            Float    @default(0.015)
+  ambientLightColor     String   @default("#d99b38")
+  ambientLightIntensity Float    @default(0.6)
+  sunLightColor         String   @default("#ffffff")
+  sunLightIntensity     Float    @default(1.2)
+  bloomIntensity        Float    @default(0.4)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  portals WorldPortal[]
+
+  @@map("world_scenes")
+}
+
+model WorldPortal {
+  id          String   @id @default(cuid())
+  sceneId     String
+  targetRoute String   // e.g. "/projects", "/about", "/experience", "/skills", "/contact"
+  posX        Float    @default(0.0)
+  posY        Float    @default(0.0)
+  posZ        Float    @default(0.0)
+  rotY        Float    @default(0.0)
+  labelEn     String
+  labelId     String
+  active      Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  scene WorldScene @relation(fields: [sceneId], references: [id], onDelete: Cascade)
+
+  @@index([sceneId, active, order])
+  @@map("world_portals")
+}
+
+// -----------------------------------------------------------------------------
+// Revision History & Audit Trails
+// -----------------------------------------------------------------------------
+
+model ContentRevision {
+  id           String   @id @default(cuid())
+  entityType   String   // "Project", "Experience", "WorldScene", etc.
+  entityId     String
+  snapshotJson Json
+  authorId     String?
+  createdAt    DateTime @default(now())
+
+  @@index([entityType, entityId, createdAt])
+  @@map("content_revisions")
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String
+  action      String   // "LOGIN", "CREATE_PROJECT", "PUBLISH_PROJECT", etc.
+  entityType  String
+  entityId    String?
+  ipHash      String
+  detailsJson Json?
+  timestamp   DateTime @default(now())
+
+  actor User @relation(fields: [actorId], references: [id], onDelete: Cascade)
+
+  @@index([actorId, timestamp])
+  @@index([entityType, timestamp])
+  @@map("audit_logs")
+}

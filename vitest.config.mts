@@ -9,10 +9,22 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/**/*.{test,spec}.{ts,tsx}"],
+    server: {
+      deps: {
+        inline: ["next-auth"],
+      },
+    },
   },
   resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "./src"),
-    },
+    alias: [
+      {
+        find: "@",
+        replacement: path.resolve(import.meta.dirname, "./src"),
+      },
+      {
+        find: /^next\/server$/,
+        replacement: path.resolve(import.meta.dirname, "./node_modules/next/server.js"),
+      },
+    ],
   },
 });

@@ -18,6 +18,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { logoutAction } from "@/actions/auth-actions";
 
 const adminNavItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
@@ -100,13 +101,15 @@ export function AdminSidebar() {
           </span>
           <span className="font-mono text-[10px] text-[var(--realm-text-muted)]">↗</span>
         </Link>
-        <Link
-          href="/admin/login"
-          className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs text-[var(--realm-clay)] transition-colors hover:bg-[var(--realm-clay)]/10"
-        >
-          <LogOut className="h-3.5 w-3.5" />
-          <span>Exit Sanctuary</span>
-        </Link>
+        <form action={logoutAction}>
+          <button
+            type="submit"
+            className="flex w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-xs text-[var(--realm-clay)] transition-colors hover:bg-[var(--realm-clay)]/10"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span>Exit Sanctuary</span>
+          </button>
+        </form>
       </div>
     </aside>
   );

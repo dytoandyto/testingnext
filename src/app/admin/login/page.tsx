@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import {
   Card,
@@ -9,10 +11,41 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Shield, KeyRound, Lock, ArrowLeft } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Shield, KeyRound, Lock, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { loginAction } from "@/actions/auth-actions";
 
 export default function AdminLoginPage() {
+  const router = useRouter();
+  const [error, setError] = React.useState<string | null>(null);
+  const [isPending, setIsPending] = React.useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setIsPending(true);
+
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      const result = await loginAction(formData);
+
+      if (!result.success) {
+        setError(result.error || "Authentication failed");
+        setIsPending(false);
+        return;
+      }
+
+      router.push(result.redirectTo || "/admin");
+      router.refresh();
+    } catch {
+      setError("An unexpected network anomaly occurred.");
+      setIsPending(false);
+    }
+  }
+
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-[var(--realm-bg)] p-4">
       {/* Ambient Glow */}
@@ -38,34 +71,60 @@ export default function AdminLoginPage() {
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
-            <form className="space-y-4">
+          <CardContent className="space-y-4">
+            {error && (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase">
                   Admin Identifier
                 </label>
-                <div className="relative">
-                  <Input
-                    type="email"
-                    placeholder="admin@indie-realm.io"
-                    required
-                    defaultValue="admin@indie-realm.io"
-                  />
-                </div>
+                <Input
+                  name="email"
+                  type="email"
+                  placeholder="admin@indie-realm.io"
+                  required
+                  defaultValue="admin@indie-realm.io"
+                  disabled={isPending}
+                />
               </div>
 
               <div className="space-y-1.5">
                 <label className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase">
                   Master Cipher
                 </label>
-                <div className="relative">
-                  <Input type="password" placeholder="••••••••••••" required />
-                </div>
+                <Input
+                  name="password"
+                  type="password"
+                  placeholder="••••••••••••"
+                  required
+                  disabled={isPending}
+                />
               </div>
 
-              <Button variant="primary" size="lg" type="submit" className="mt-4 w-full gap-2">
-                <KeyRound className="h-4 w-4" />
-                <span>Enter Sanctuary</span>
+              <Button
+                variant="primary"
+                size="lg"
+                type="submit"
+                disabled={isPending}
+                className="mt-4 w-full gap-2"
+              >
+                {isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <span>Verifying Cipher...</span>
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="h-4 w-4" />
+                    <span>Enter Sanctuary</span>
+                  </>
+                )}
               </Button>
             </form>
           </CardContent>
