@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+:root {
+  /* Indie Game Theme Tokens: Deep Slate & Warm Moss/Amber */
+  --realm-bg: #0d131a;
+  --realm-bg-surface: #141d27;
+  --realm-bg-card: #182330;
+  --realm-bg-elevated: #202d3d;
+  --realm-border: #2c3c4f;
+  --realm-border-light: #3d5168;
+
+  --realm-text-primary: #f5f4f0;
+  --realm-text-secondary: #a9bac7;
+  --realm-text-muted: #6f8291;
+
+  --realm-amber: #d99b38;
+  --realm-amber-glow: #f3c46b;
+  --realm-moss: #3d634f;
+  --realm-moss-bright: #528a6d;
+  --realm-clay: #c45a3c;
+  --realm-parchment: #e4dbc9;
+
+  /* Tailwind v4 automatic utility bindings */
+  --color-realm-bg: var(--realm-bg);
+  --color-realm-surface: var(--realm-bg-surface);
+  --color-realm-card: var(--realm-bg-card);
+  --color-realm-elevated: var(--realm-bg-elevated);
+  --color-realm-border: var(--realm-border);
+  --color-realm-border-light: var(--realm-border-light);
+
+  --color-realm-primary: var(--realm-text-primary);
+  --color-realm-secondary: var(--realm-text-secondary);
+  --color-realm-muted: var(--realm-text-muted);
+
+  --color-realm-amber: var(--realm-amber);
+  --color-realm-amber-glow: var(--realm-amber-glow);
+  --color-realm-moss: var(--realm-moss);
+  --color-realm-moss-bright: var(--realm-moss-bright);
+  --color-realm-clay: var(--realm-clay);
+  --color-realm-parchment: var(--realm-parchment);
+
+  --radius-tactile: 10px;
+  --radius-pill: 9999px;
+}
+
+/* Support for alternate CMS Theme Presets (e.g. Dawn, Twilight, Parchment) */
+[data-theme="parchment"] {
+  --realm-bg: #f5f2ea;
+  --realm-bg-surface: #ebe5d7;
+  --realm-bg-card: #e2dbca;
+  --realm-bg-elevated: #d6ccb6;
+  --realm-border: #c4b69d;
+  --realm-border-light: #b0a084;
+  --realm-text-primary: #23201b;
+  --realm-text-secondary: #575145;
+  --realm-text-muted: #877f6f;
+  --realm-amber: #b0701a;
+  --realm-moss: #2f5240;
+}
+
+body {
+  background-color: var(--realm-bg);
+  color: var(--realm-text-primary);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  min-height: 100vh;
+  overflow-x: hidden;
+  selection-background-color: var(--realm-amber);
+  selection-color: #0d131a;
+}
+
+/* Custom Tactical Indie Game Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: var(--realm-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--realm-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--realm-amber);
+}
+
+/* Tactile HUD / Game UI Utilities */
+.tactile-card {
+  background: var(--realm-bg-card);
+  border: 1px solid var(--realm-border);
+  border-radius: var(--radius-tactile);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tactile-card:hover {
+  border-color: var(--realm-border-light);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.tactile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  border-radius: var(--radius-tactile);
+  padding: 0.625rem 1.25rem;
+  transition: all 0.15s ease-out;
+  cursor: pointer;
+  position: relative;
+  user-select: none;
+}
+
+.tactile-btn-primary {
+  background: var(--realm-amber);
+  color: #0d131a;
+  border: 1px solid #eab75c;
+  box-shadow: 0 2px 0 #9f6c18, 0 4px 12px rgba(217, 155, 56, 0.25);
+}
+
+.tactile-btn-primary:hover {
+  background: var(--realm-amber-glow);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 0 #9f6c18, 0 6px 16px rgba(217, 155, 56, 0.35);
+}
+
+.tactile-btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 #9f6c18;
+}
+
+.tactile-btn-secondary {
+  background: var(--realm-bg-elevated);
+  color: var(--realm-text-primary);
+  border: 1px solid var(--realm-border);
+  box-shadow: 0 2px 0 #131b24;
+}
+
+.tactile-btn-secondary:hover {
+  background: #27374a;
+  border-color: var(--realm-border-light);
+  transform: translateY(-1px);
+}
+
+.tactile-btn-secondary:active {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 transparent;
+}
+
+/* Atmospheric Beacon Rune & Glow */
+.beacon-pulse {
+  animation: beaconPulse 3s infinite ease-in-out;
+}
+
+@keyframes beaconPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+    filter: drop-shadow(0 0 12px var(--realm-amber));
+  }
+}

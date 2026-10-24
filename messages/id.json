@@ -1,0 +1,88 @@
+{
+  "Navigation": {
+    "home": "Alam Raya",
+    "about": "Riwayat",
+    "projects": "Karya",
+    "experience": "Ekspedisi",
+    "skills": "Penguasaan",
+    "contact": "Suar Kontak",
+    "world": "Dunia 3D",
+    "explore": "Jelajahi Dunia",
+    "switchTo2D": "Beralih ke Tampilan 2D",
+    "switchTo3D": "Masuki Dunia 3D",
+    "admin": "CMS Suaka",
+    "language": "Bahasa",
+    "backToHome": "Kembali ke Alam"
+  },
+  "Common": {
+    "viewProject": "Periksa Artefak",
+    "backToWorld": "Kembali ke Alam",
+    "liveDemo": "Jelajahi Langsung",
+    "sourceCode": "Pelajari Cetak Biru",
+    "viewAll": "Lihat Semua",
+    "loading": "Menghidupkan dunia...",
+    "errorTitle": "Terjadi Anomali",
+    "errorDesc": "Tautan etereal terputus. Silakan hubungkan kembali.",
+    "notFoundTitle": "Alam Tidak Ditemukan",
+    "notFoundDesc": "Tujuan ini telah melayang di luar peta astral.",
+    "allRightsReserved": "Dibuat dengan dedikasi & kode pemrograman."
+  },
+  "Hero": {
+    "greeting": "Salam, Penjelajah",
+    "role": "Arsitek Perangkat Lunak Interaktif & Dunia Digital",
+    "description": "Masuki diorama digital buatan tangan di mana rekayasa perangkat lunak berpadu dengan seni atmosferik. Jelajahi portal interaktif menuju sistem nyata, studi kasus arsitektur, dan pencapaian teknis.",
+    "enterWorld": "Masuki Alam Interaktif",
+    "browseCatalog": "Telusuri Indeks 2D"
+  },
+  "World": {
+    "loadingScene": "Memuat Diorama Indie...",
+    "hintInteraction": "Klik portal bercahaya untuk menuju tujuan • Geser kursor untuk memutar sudut pandang",
+    "accessibleNotice": "Navigasi 2D yang mudah diakses selalu tersedia di menu atas",
+    "reducedMotionActive": "Mode pengurangan gerak aktif: transisi kamera akan berlangsung seketika",
+    "webglUnsupported": "WebGL tidak didukung pada peranti ini. Menampilkan pengalaman isometrik 2D buatan tangan."
+  },
+  "About": {
+    "title": "Riwayat Perjalanan",
+    "subtitle": "Asal mula, filosofi berpikir, dan perjalanan dedikasi karya",
+    "biographyHeading": "Filosofi Rekayasa",
+    "principlesHeading": "Prinsip Utama"
+  },
+  "Projects": {
+    "title": "Bengkel Karya",
+    "subtitle": "Koleksi sistem perangkat lunak, mesin permainan, dan aplikasi produksi",
+    "filterAll": "Semua Bidang",
+    "featured": "Karya Unggulan",
+    "technologies": "Ditempa Dengan",
+    "caseStudy": "Ulasan Arsitektur",
+    "keyFeatures": "Fitur Penting",
+    "metrics": "Dampak & Hasil"
+  },
+  "Experience": {
+    "title": "Ekspedisi Profesional",
+    "subtitle": "Perjalanan karier, peran kepemimpinan, dan jejak langkah teknis",
+    "present": "Masa Sekarang"
+  },
+  "Skills": {
+    "title": "Penguasaan Keahlian",
+    "subtitle": "Kapabilitas teknis, paradigma arsitektur, dan perkakas rekayasa",
+    "proficiency": "Tingkat Penguasaan"
+  },
+  "Contact": {
+    "title": "Suar Sinyal",
+    "subtitle": "Kirimkan sinyal komunikasi untuk proyek, kolaborasi, atau diskusi teknis",
+    "nameLabel": "Nama / Identitas Anda",
+    "emailLabel": "Frekuensi / Alamat Surel",
+    "messageLabel": "Pesan Yang Ditransmisikan",
+    "sendButton": "Kirimkan Pesan",
+    "sending": "Mentransmisikan...",
+    "successMessage": "Pesan telah diterima di pangkalan. Jawaban akan dikirimkan segera."
+  },
+  "Admin": {
+    "dashboardTitle": "CMS Suaka Alam",
+    "statsOverview": "Metrik Sistem",
+    "publishedProjects": "Karya Terpublikasi",
+    "activePortals": "Portal Aktif",
+    "draftsCount": "Draf Tertunda",
+    "quickActions": "Tindakan Cepat"
+  }
+}

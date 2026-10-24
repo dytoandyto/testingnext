@@ -1,0 +1,88 @@
+{
+  "Navigation": {
+    "home": "World",
+    "about": "Chronicle",
+    "projects": "Creations",
+    "experience": "Expeditions",
+    "skills": "Mastery",
+    "contact": "Beacon",
+    "world": "3D Realm",
+    "explore": "Explore World",
+    "switchTo2D": "Switch to 2D View",
+    "switchTo3D": "Enter 3D World",
+    "admin": "Sanctuary CMS",
+    "language": "Language",
+    "backToHome": "Return to Realm"
+  },
+  "Common": {
+    "viewProject": "Examine Artefact",
+    "backToWorld": "Return to Realm",
+    "liveDemo": "Live Inhabitation",
+    "sourceCode": "Inspect Blueprint",
+    "viewAll": "Survey All",
+    "loading": "Conjuring world...",
+    "errorTitle": "An Anomaly Occurred",
+    "errorDesc": "The ethereal link faltered. Please try reconnecting.",
+    "notFoundTitle": "Realm Not Found",
+    "notFoundDesc": "This destination has drifted beyond the astral map.",
+    "allRightsReserved": "Handcrafted with passion & code."
+  },
+  "Hero": {
+    "greeting": "Greetings, Traveler",
+    "role": "Architect of Interactive Software & Digital Realms",
+    "description": "Step into a handcrafted digital diorama where engineering meets atmospheric art. Explore interactive portals leading to real software systems, architectural case studies, and engineering milestones.",
+    "enterWorld": "Enter Interactive Realm",
+    "browseCatalog": "Explore 2D Index"
+  },
+  "World": {
+    "loadingScene": "Loading Indie Diorama...",
+    "hintInteraction": "Click glowing portals to venture into destinations • Drag to orbit the diorama",
+    "accessibleNotice": "Accessible 2D navigation is always available via the menu above",
+    "reducedMotionActive": "Reduced motion mode active: camera transitions will be instant",
+    "webglUnsupported": "WebGL is not supported on this device. Presenting the handcrafted 2D isometric experience."
+  },
+  "About": {
+    "title": "The Chronicle",
+    "subtitle": "Origins, philosophies, and the journey of craft",
+    "biographyHeading": "Philosophy of Building",
+    "principlesHeading": "Guiding Tenets"
+  },
+  "Projects": {
+    "title": "The Workshop",
+    "subtitle": "Curated software systems, game engines, and production applications",
+    "filterAll": "All Disciplines",
+    "featured": "Featured Creations",
+    "technologies": "Forged With",
+    "caseStudy": "Architectural Breakdown",
+    "keyFeatures": "Notable Capabilities",
+    "metrics": "Impact & Results"
+  },
+  "Experience": {
+    "title": "Expeditions",
+    "subtitle": "Professional journeys, leadership roles, and technical milestones",
+    "present": "Current Era"
+  },
+  "Skills": {
+    "title": "Arcane Mastery",
+    "subtitle": "Technical capabilities, architectural paradigms, and toolkits",
+    "proficiency": "Proficiency"
+  },
+  "Contact": {
+    "title": "Signal Beacon",
+    "subtitle": "Initiate communication for commissions, collaborations, or inquiries",
+    "nameLabel": "Your Designation / Name",
+    "emailLabel": "Your Frequency / Email",
+    "messageLabel": "Transmitted Dispatch",
+    "sendButton": "Broadcast Dispatch",
+    "sending": "Transmitting...",
+    "successMessage": "Dispatch received. Expect a response across the wires soon."
+  },
+  "Admin": {
+    "dashboardTitle": "Realm Sanctuary CMS",
+    "statsOverview": "System Metrics",
+    "publishedProjects": "Published Works",
+    "activePortals": "Active Portals",
+    "draftsCount": "Pending Drafts",
+    "quickActions": "Quick Directives"
+  }
+}
