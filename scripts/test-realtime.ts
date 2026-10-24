@@ -22,7 +22,7 @@ async function testRealtime() {
   console.log(`  Fingerprint: ${sealedProjects.queryFingerprint}`);
 
   console.log(`[3] Testing WebSocket handshake to Neon Realtime endpoint: ${NEON_REALTIME_URL}...`);
-  await new Promise<void>((resolve, reject) => {
+  await new Promise<void>((resolve, _reject) => {
     const ws = new WebSocket(NEON_REALTIME_URL);
     const timeout = setTimeout(() => {
       ws.terminate();

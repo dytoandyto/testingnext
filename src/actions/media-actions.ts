@@ -7,7 +7,6 @@ import { recordAuditLog } from "@/lib/audit";
 import {
   generateCloudinarySignature,
   deleteFromCloudinary,
-  ALLOWED_FORMATS,
   MAX_IMAGE_BYTES,
   MAX_VIDEO_BYTES,
 } from "@/lib/media/cloudinary";
