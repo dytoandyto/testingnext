@@ -42,21 +42,16 @@ export function Navbar() {
     <header className="sticky top-0 z-40 w-full border-b border-[var(--realm-border)] bg-[var(--realm-bg)]/85 backdrop-blur-md transition-colors">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Emblem */}
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 group select-none cursor-pointer"
-        >
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--realm-bg-card)] border border-[var(--realm-border)] shadow-[0_2px_0_#131b24] group-hover:border-[var(--realm-amber)] transition-colors">
-            <span className="font-mono text-xs font-bold text-[var(--realm-amber)]">
-              ◇
-            </span>
-            <div className="absolute -inset-0.5 rounded-lg bg-[var(--realm-amber)]/10 opacity-0 group-hover:opacity-100 transition-opacity blur-sm pointer-events-none" />
+        <Link href="/" className="group flex cursor-pointer items-center gap-2.5 select-none">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-card)] shadow-[0_2px_0_#131b24] transition-colors group-hover:border-[var(--realm-amber)]">
+            <span className="font-mono text-xs font-bold text-[var(--realm-amber)]">◇</span>
+            <div className="pointer-events-none absolute -inset-0.5 rounded-lg bg-[var(--realm-amber)]/10 opacity-0 blur-sm transition-opacity group-hover:opacity-100" />
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold tracking-wider text-sm text-[var(--realm-text-primary)] group-hover:text-[var(--realm-amber)] transition-colors">
+            <span className="text-sm font-semibold tracking-wider text-[var(--realm-text-primary)] transition-colors group-hover:text-[var(--realm-amber)]">
               INDIE REALM
             </span>
-            <span className="font-mono text-[10px] text-[var(--realm-text-muted)] tracking-tight">
+            <span className="font-mono text-[10px] tracking-tight text-[var(--realm-text-muted)]">
               PORTFOLIO CMS
             </span>
           </div>
@@ -64,7 +59,7 @@ export function Navbar() {
 
         {/* Desktop Navigation Links */}
         <nav
-          className="hidden md:flex items-center gap-1 rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-surface)]/70 px-3 py-1 shadow-inner"
+          className="hidden items-center gap-1 rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-surface)]/70 px-3 py-1 shadow-inner md:flex"
           aria-label="Main Navigation"
         >
           {navItems.map((item) => {
@@ -75,13 +70,18 @@ export function Navbar() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all",
+                  "flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all",
                   active
-                    ? "bg-[var(--realm-bg-card)] text-[var(--realm-amber)] border border-[var(--realm-border)] shadow-sm font-semibold"
-                    : "text-[var(--realm-text-secondary)] hover:text-[var(--realm-text-primary)] hover:bg-[var(--realm-bg-card)]/50"
+                    ? "border border-[var(--realm-border)] bg-[var(--realm-bg-card)] font-semibold text-[var(--realm-amber)] shadow-sm"
+                    : "text-[var(--realm-text-secondary)] hover:bg-[var(--realm-bg-card)]/50 hover:text-[var(--realm-text-primary)]"
                 )}
               >
-                <Icon className={cn("h-3.5 w-3.5", active ? "text-[var(--realm-amber)]" : "text-[var(--realm-text-muted)]")} />
+                <Icon
+                  className={cn(
+                    "h-3.5 w-3.5",
+                    active ? "text-[var(--realm-amber)]" : "text-[var(--realm-text-muted)]"
+                  )}
+                />
                 <span>{item.label}</span>
               </Link>
             );
@@ -93,7 +93,7 @@ export function Navbar() {
           {/* Quick 2D/3D status indicator */}
           <Link
             href="/"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-card)] px-2.5 py-1 text-xs font-mono text-[var(--realm-text-secondary)] hover:border-[var(--realm-amber)] hover:text-[var(--realm-amber)] transition-colors"
+            className="hidden items-center gap-1.5 rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-card)] px-2.5 py-1 font-mono text-xs text-[var(--realm-text-secondary)] transition-colors hover:border-[var(--realm-amber)] hover:text-[var(--realm-amber)] sm:inline-flex"
             title={t("world")}
           >
             <Eye className="h-3 w-3 text-[var(--realm-amber)]" />
@@ -105,7 +105,7 @@ export function Navbar() {
           {/* Admin Gateway */}
           <NextLink
             href="/admin"
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-text-muted)] hover:text-[var(--realm-amber)] hover:border-[var(--realm-amber)] transition-colors"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-text-muted)] transition-colors hover:border-[var(--realm-amber)] hover:text-[var(--realm-amber)]"
             title={t("admin")}
             aria-label={t("admin")}
           >
@@ -115,7 +115,7 @@ export function Navbar() {
           {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-text-primary)] hover:border-[var(--realm-border-light)]"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-text-primary)] hover:border-[var(--realm-border-light)] md:hidden"
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle Navigation Menu"
           >
@@ -126,7 +126,7 @@ export function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-[var(--realm-border)] bg-[var(--realm-bg-card)] px-4 py-4 space-y-2 shadow-xl animate-in slide-in-from-top-2">
+        <div className="animate-in slide-in-from-top-2 space-y-2 border-b border-[var(--realm-border)] bg-[var(--realm-bg-card)] px-4 py-4 shadow-xl md:hidden">
           {navItems.map((item) => {
             const active = isActive(item.href);
             const Icon = item.icon;
@@ -136,13 +136,18 @@ export function Navbar() {
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   active
-                    ? "bg-[var(--realm-bg-surface)] text-[var(--realm-amber)] border border-[var(--realm-border)]"
+                    ? "border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-amber)]"
                     : "text-[var(--realm-text-secondary)] hover:bg-[var(--realm-bg-surface)] hover:text-[var(--realm-text-primary)]"
                 )}
               >
-                <Icon className={cn("h-4 w-4", active ? "text-[var(--realm-amber)]" : "text-[var(--realm-text-muted)]")} />
+                <Icon
+                  className={cn(
+                    "h-4 w-4",
+                    active ? "text-[var(--realm-amber)]" : "text-[var(--realm-text-muted)]"
+                  )}
+                />
                 <span>{item.label}</span>
               </Link>
             );

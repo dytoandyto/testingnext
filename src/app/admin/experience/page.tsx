@@ -6,13 +6,13 @@ import { Briefcase, Plus } from "lucide-react";
 
 export default function AdminExperiencePage() {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
       <AdminHeader
         title="Expeditions & Career Manager"
         description="Maintain verifiable professional roles, leadership achievements, and education history."
       />
 
-      <main className="p-6 sm:p-8 space-y-6 flex-1">
+      <main className="flex-1 space-y-6 p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Briefcase className="h-5 w-5 text-[var(--realm-amber)]" />
@@ -26,7 +26,8 @@ export default function AdminExperiencePage() {
 
         <Card className="p-6">
           <p className="text-xs text-[var(--realm-text-secondary)]">
-            Experience management module initialized. Full CRUD actions and drag-and-drop chronological sorting will connect with Prisma in Phase 3.
+            Experience management module initialized. Full CRUD actions and drag-and-drop
+            chronological sorting will connect with Prisma in Phase 3.
           </p>
         </Card>
       </main>

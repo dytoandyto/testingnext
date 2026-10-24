@@ -6,13 +6,13 @@ import { Wrench, Plus } from "lucide-react";
 
 export default function AdminSkillsPage() {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
       <AdminHeader
         title="Arcane Mastery & Skills Manager"
         description="Organize skill categories, proficiency levels, and engineering toolkits."
       />
 
-      <main className="p-6 sm:p-8 space-y-6 flex-1">
+      <main className="flex-1 space-y-6 p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Wrench className="h-5 w-5 text-[var(--realm-amber)]" />
@@ -26,7 +26,8 @@ export default function AdminSkillsPage() {
 
         <Card className="p-6">
           <p className="text-xs text-[var(--realm-text-secondary)]">
-            Skills management module initialized. Ready for category classification, ranking, and visual icon binding in Phase 3.
+            Skills management module initialized. Ready for category classification, ranking, and
+            visual icon binding in Phase 3.
           </p>
         </Card>
       </main>

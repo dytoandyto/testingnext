@@ -29,18 +29,14 @@ export const metadata: Metadata = {
     "An interactive 3D indie game world portfolio and CMS engineered for modern software systems, architectural case studies, and engineering craft.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       lang="en"
       className={`${outfit.variable} ${newsreader.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-[var(--realm-bg)] text-[var(--realm-text-primary)]">
+      <body className="flex min-h-full flex-col bg-[var(--realm-bg)] text-[var(--realm-text-primary)]">
         {children}
       </body>
     </html>

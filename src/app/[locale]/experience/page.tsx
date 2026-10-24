@@ -3,11 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Layers, Calendar, MapPin, Building2, CheckCircle2 } from "lucide-react";
 
-export default async function ExperiencePage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function ExperiencePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
@@ -44,38 +40,36 @@ export default async function ExperiencePage({
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
+    <div className="mx-auto max-w-5xl space-y-12 px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="space-y-4 border-b border-[var(--realm-border)] pb-8">
         <Badge variant="amber" className="gap-1.5">
           <Layers className="h-3.5 w-3.5" />
           <span>PORTAL: EXPEDITIONS</span>
         </Badge>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-[var(--realm-text-primary)]">
+        <h1 className="text-3xl font-bold tracking-tight text-[var(--realm-text-primary)] sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="text-base text-[var(--realm-text-secondary)] max-w-2xl">
-          {t("subtitle")}
-        </p>
+        <p className="max-w-2xl text-base text-[var(--realm-text-secondary)]">{t("subtitle")}</p>
       </div>
 
       {/* Timeline */}
-      <div className="relative border-l border-[var(--realm-border-light)] ml-4 sm:ml-8 space-y-10 pl-6 sm:pl-10">
+      <div className="relative ml-4 space-y-10 border-l border-[var(--realm-border-light)] pl-6 sm:ml-8 sm:pl-10">
         {timelineEvents.map((event, index) => (
-          <div key={index} className="relative group">
+          <div key={index} className="group relative">
             {/* Timeline Rune Node */}
-            <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 flex h-7 w-7 items-center justify-center rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-card)] group-hover:border-[var(--realm-amber)] transition-colors">
+            <div className="absolute top-1.5 -left-[31px] flex h-7 w-7 items-center justify-center rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-card)] transition-colors group-hover:border-[var(--realm-amber)] sm:-left-[47px]">
               <span className="h-2 w-2 rounded-full bg-[var(--realm-amber)]" />
             </div>
 
-            <Card className="group-hover:border-[var(--realm-border-light)] transition-colors">
+            <Card className="transition-colors group-hover:border-[var(--realm-border-light)]">
               <CardHeader>
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <Badge variant="amber" className="font-mono text-xs">
                     <Calendar className="h-3 w-3" />
                     <span>{event.period}</span>
                   </Badge>
-                  <div className="flex items-center gap-3 text-xs text-[var(--realm-text-muted)] font-mono">
+                  <div className="flex items-center gap-3 font-mono text-xs text-[var(--realm-text-muted)]">
                     <span className="flex items-center gap-1">
                       <Building2 className="h-3 w-3" />
                       <span>{event.organization}</span>
@@ -87,17 +81,17 @@ export default async function ExperiencePage({
                   </div>
                 </div>
 
-                <CardTitle className="text-lg text-[var(--realm-text-primary)] mt-2">
+                <CardTitle className="mt-2 text-lg text-[var(--realm-text-primary)]">
                   {event.role}
                 </CardTitle>
-                <CardDescription className="text-sm leading-relaxed mt-1">
+                <CardDescription className="mt-1 text-sm leading-relaxed">
                   {event.description}
                 </CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-4 pt-0">
                 <div className="space-y-2">
-                  <h4 className="text-xs font-mono uppercase tracking-wider text-[var(--realm-amber)]">
+                  <h4 className="font-mono text-xs tracking-wider text-[var(--realm-amber)] uppercase">
                     Key Outcomes & Impact
                   </h4>
                   <ul className="space-y-1.5">
@@ -106,14 +100,14 @@ export default async function ExperiencePage({
                         key={i}
                         className="flex items-start gap-2 text-xs text-[var(--realm-text-secondary)]"
                       >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-[var(--realm-moss-bright)] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[var(--realm-moss-bright)]" />
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 pt-2 border-t border-[var(--realm-border)]/50">
+                <div className="flex flex-wrap gap-1.5 border-t border-[var(--realm-border)]/50 pt-2">
                   {event.technologies.map((tech) => (
                     <Badge key={tech} variant="default" className="text-[10px]">
                       {tech}

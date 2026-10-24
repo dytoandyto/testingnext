@@ -5,13 +5,13 @@ import { Settings } from "lucide-react";
 
 export default function AdminSettingsPage() {
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
       <AdminHeader
         title="Global Site Settings"
         description="Configure site title, metadata, fallback locale, analytics, and contact credentials."
       />
 
-      <main className="p-6 sm:p-8 space-y-6 flex-1">
+      <main className="flex-1 space-y-6 p-6 sm:p-8">
         <div className="flex items-center gap-2">
           <Settings className="h-5 w-5 text-[var(--realm-amber)]" />
           <span className="text-sm font-semibold">General System Properties</span>

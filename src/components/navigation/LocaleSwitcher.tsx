@@ -22,7 +22,7 @@ export function LocaleSwitcher({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "inline-flex items-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] p-1 text-xs font-mono shadow-inner",
+        "inline-flex items-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] p-1 font-mono text-xs shadow-inner",
         className
       )}
       role="group"
@@ -35,9 +35,9 @@ export function LocaleSwitcher({ className }: { className?: string }) {
         onClick={() => toggleLocale("en")}
         disabled={isPending}
         className={cn(
-          "rounded px-2 py-1 transition-all cursor-pointer",
+          "cursor-pointer rounded px-2 py-1 transition-all",
           locale === "en"
-            ? "bg-[var(--realm-amber)] text-[#0d131a] font-bold shadow-sm"
+            ? "bg-[var(--realm-amber)] font-bold text-[#0d131a] shadow-sm"
             : "text-[var(--realm-text-secondary)] hover:text-[var(--realm-text-primary)]"
         )}
       >
@@ -47,9 +47,9 @@ export function LocaleSwitcher({ className }: { className?: string }) {
         onClick={() => toggleLocale("id")}
         disabled={isPending}
         className={cn(
-          "rounded px-2 py-1 transition-all cursor-pointer",
+          "cursor-pointer rounded px-2 py-1 transition-all",
           locale === "id"
-            ? "bg-[var(--realm-amber)] text-[#0d131a] font-bold shadow-sm"
+            ? "bg-[var(--realm-amber)] font-bold text-[#0d131a] shadow-sm"
             : "text-[var(--realm-text-secondary)] hover:text-[var(--realm-text-primary)]"
         )}
       >

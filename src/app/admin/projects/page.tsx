@@ -35,18 +35,20 @@ export default function AdminProjectsPage() {
   ];
 
   return (
-    <div className="flex-1 flex flex-col">
+    <div className="flex flex-1 flex-col">
       <AdminHeader
         title="Creations & Works Manager"
         description="Author, translate, and publish project case studies and technical architectures."
       />
 
-      <main className="p-6 sm:p-8 space-y-6 flex-1">
+      <main className="flex-1 space-y-6 p-6 sm:p-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <FolderGit2 className="h-5 w-5 text-[var(--realm-amber)]" />
             <span className="text-sm font-semibold">Active Repository Records</span>
-            <Badge variant="outline" className="font-mono">{projects.length} Entries</Badge>
+            <Badge variant="outline" className="font-mono">
+              {projects.length} Entries
+            </Badge>
           </div>
           <Button variant="primary" size="sm" className="gap-1.5 font-mono text-xs">
             <Plus className="h-4 w-4" />
@@ -57,7 +59,7 @@ export default function AdminProjectsPage() {
         <Card>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-[var(--realm-border)] bg-[var(--realm-bg-surface)] text-[var(--realm-text-muted)] font-mono uppercase tracking-wider">
+              <thead className="border-b border-[var(--realm-border)] bg-[var(--realm-bg-surface)] font-mono tracking-wider text-[var(--realm-text-muted)] uppercase">
                 <tr>
                   <th className="p-4">Project Title</th>
                   <th className="p-4">Slug</th>
@@ -69,7 +71,10 @@ export default function AdminProjectsPage() {
               </thead>
               <tbody className="divide-y divide-[var(--realm-border)]/50">
                 {projects.map((proj) => (
-                  <tr key={proj.id} className="hover:bg-[var(--realm-bg-surface)]/50 transition-colors">
+                  <tr
+                    key={proj.id}
+                    className="transition-colors hover:bg-[var(--realm-bg-surface)]/50"
+                  >
                     <td className="p-4 font-semibold text-[var(--realm-text-primary)]">
                       {proj.title}
                     </td>
@@ -89,7 +94,7 @@ export default function AdminProjectsPage() {
                         {proj.locales.map((loc) => (
                           <span
                             key={loc}
-                            className="px-1.5 py-0.5 rounded bg-[var(--realm-bg-elevated)] border border-[var(--realm-border)] text-[10px]"
+                            className="rounded border border-[var(--realm-border)] bg-[var(--realm-bg-elevated)] px-1.5 py-0.5 text-[10px]"
                           >
                             {loc}
                           </span>
@@ -102,14 +107,29 @@ export default function AdminProjectsPage() {
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2">
                         <Link href={`/en/projects/${proj.slug}`} target="_blank">
-                          <Button variant="ghost" size="icon" className="h-8 w-8" title="Preview Public Page">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            title="Preview Public Page"
+                          >
                             <Eye className="h-3.5 w-3.5" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[var(--realm-amber)]" title="Edit Record">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-[var(--realm-amber)]"
+                          title="Edit Record"
+                        >
                           <Edit className="h-3.5 w-3.5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-[var(--realm-clay)]" title="Archive / Delete">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-[var(--realm-clay)]"
+                          title="Archive / Delete"
+                        >
                           <Trash2 className="h-3.5 w-3.5" />
                         </Button>
                       </div>

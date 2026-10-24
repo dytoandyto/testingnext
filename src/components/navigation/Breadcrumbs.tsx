@@ -17,11 +17,11 @@ export function Breadcrumbs() {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="flex items-center gap-1.5 py-3 text-xs font-mono text-[var(--realm-text-muted)]"
+      className="flex items-center gap-1.5 py-3 font-mono text-xs text-[var(--realm-text-muted)]"
     >
       <Link
         href="/"
-        className="flex items-center gap-1 hover:text-[var(--realm-amber)] transition-colors"
+        className="flex items-center gap-1 transition-colors hover:text-[var(--realm-amber)]"
       >
         <Compass className="h-3.5 w-3.5 text-[var(--realm-amber)]" />
         <span>{t("home")}</span>
@@ -34,27 +34,24 @@ export function Breadcrumbs() {
           segment === "about"
             ? t("about")
             : segment === "projects"
-            ? t("projects")
-            : segment === "experience"
-            ? t("experience")
-            : segment === "skills"
-            ? t("skills")
-            : segment === "contact"
-            ? t("contact")
-            : segment;
+              ? t("projects")
+              : segment === "experience"
+                ? t("experience")
+                : segment === "skills"
+                  ? t("skills")
+                  : segment === "contact"
+                    ? t("contact")
+                    : segment;
 
         return (
           <React.Fragment key={href}>
             <ChevronRight className="h-3 w-3 text-[var(--realm-border-light)]" />
             {isLast ? (
-              <span className="text-[var(--realm-text-primary)] font-semibold truncate max-w-[200px]">
+              <span className="max-w-[200px] truncate font-semibold text-[var(--realm-text-primary)]">
                 {label}
               </span>
             ) : (
-              <Link
-                href={href}
-                className="hover:text-[var(--realm-amber)] transition-colors"
-              >
+              <Link href={href} className="transition-colors hover:text-[var(--realm-amber)]">
                 {label}
               </Link>
             )}

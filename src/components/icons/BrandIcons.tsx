@@ -45,4 +45,3 @@ export function TwitterIcon({ className = "h-4 w-4" }: { className?: string }) {
 export const Github = GithubIcon;
 export const Linkedin = LinkedinIcon;
 export const Twitter = TwitterIcon;
-

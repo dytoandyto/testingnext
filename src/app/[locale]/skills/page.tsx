@@ -3,11 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Sparkles, Database, Globe, Cpu } from "lucide-react";
 
-export default async function SkillsPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function SkillsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
@@ -53,51 +49,50 @@ export default async function SkillsPage({
   ];
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 space-y-12">
+    <div className="mx-auto max-w-5xl space-y-12 px-4 py-8 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="space-y-4 border-b border-[var(--realm-border)] pb-8">
         <Badge variant="amber" className="gap-1.5">
           <Sparkles className="h-3.5 w-3.5" />
           <span>PORTAL: MASTERY</span>
         </Badge>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-[var(--realm-text-primary)]">
+        <h1 className="text-3xl font-bold tracking-tight text-[var(--realm-text-primary)] sm:text-4xl">
           {t("title")}
         </h1>
-        <p className="text-base text-[var(--realm-text-secondary)] max-w-2xl">
-          {t("subtitle")}
-        </p>
+        <p className="max-w-2xl text-base text-[var(--realm-text-secondary)]">{t("subtitle")}</p>
       </div>
 
       {/* Skill Categories */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
         {skillCategories.map((group) => {
           const Icon = group.icon;
           return (
-            <Card key={group.category} className="hover:border-[var(--realm-border-light)] transition-colors">
+            <Card
+              key={group.category}
+              className="transition-colors hover:border-[var(--realm-border-light)]"
+            >
               <CardHeader>
-                <div className="flex items-center gap-2 mb-2 text-[var(--realm-amber)]">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--realm-bg-surface)] border border-[var(--realm-border)]">
+                <div className="mb-2 flex items-center gap-2 text-[var(--realm-amber)]">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--realm-border)] bg-[var(--realm-bg-surface)]">
                     <Icon className="h-4 w-4" />
                   </div>
-                  <Badge variant="moss" className="text-[10px] font-mono">
+                  <Badge variant="moss" className="font-mono text-[10px]">
                     VERIFIED
                   </Badge>
                 </div>
                 <CardTitle className="text-base">{group.category}</CardTitle>
-                <CardDescription className="text-xs">
-                  {group.description}
-                </CardDescription>
+                <CardDescription className="text-xs">{group.description}</CardDescription>
               </CardHeader>
 
               <CardContent className="space-y-4 pt-0">
                 {group.skills.map((skill) => (
                   <div key={skill.name} className="space-y-1.5">
-                    <div className="flex justify-between text-xs font-mono">
+                    <div className="flex justify-between font-mono text-xs">
                       <span className="text-[var(--realm-text-primary)]">{skill.name}</span>
                       <span className="text-[var(--realm-text-muted)]">{skill.level}%</span>
                     </div>
                     {/* Tactile Indie Progress Bar */}
-                    <div className="h-2 w-full rounded-full bg-[var(--realm-bg-surface)] border border-[var(--realm-border)] p-0.5 overflow-hidden">
+                    <div className="h-2 w-full overflow-hidden rounded-full border border-[var(--realm-border)] bg-[var(--realm-bg-surface)] p-0.5">
                       <div
                         className="h-full rounded-full bg-[var(--realm-amber)] shadow-[0_0_8px_rgba(217,155,56,0.5)] transition-all duration-500"
                         style={{ width: `${skill.level}%` }}
