@@ -1,23 +1,11 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { createContentRevision } from "@/lib/revisions";
 import { revalidatePath, updateTag } from "next/cache";
-
-export const SiteSettingsFormSchema = z.object({
-  siteTitle: z.string().min(2, "Site title is required"),
-  metaDescription: z.string().min(10, "Meta description is required"),
-  defaultLocale: z.enum(["en", "id"]).default("en"),
-  contactEmail: z.string().email("Must be a valid email"),
-  githubUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  linkedinUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  twitterUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-});
-
-export type SiteSettingsFormData = z.infer<typeof SiteSettingsFormSchema>;
+import { SiteSettingsFormSchema, type SiteSettingsFormData } from "@/schemas";
 
 export async function getSiteSettingsAdminAction() {
   await requireAdminSession();

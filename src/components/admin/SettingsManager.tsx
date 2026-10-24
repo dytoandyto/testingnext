@@ -3,11 +3,8 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  SiteSettingsFormSchema,
-  SiteSettingsFormData,
-  updateSiteSettingsAction,
-} from "@/actions/settings-actions";
+import { SiteSettingsFormSchema, type SiteSettingsFormData } from "@/schemas";
+import { updateSiteSettingsAction } from "@/actions/settings-actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

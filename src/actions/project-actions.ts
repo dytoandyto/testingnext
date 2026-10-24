@@ -1,41 +1,11 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { createContentRevision } from "@/lib/revisions";
 import { revalidatePath, updateTag } from "next/cache";
-
-const MetricItemSchema = z.object({
-  label: z.string().min(1, "Metric label is required"),
-  value: z.string().min(1, "Metric value is required"),
-});
-
-const ProjectTranslationSchema = z.object({
-  title: z.string().min(2, "Title must be at least 2 characters"),
-  summary: z.string().min(10, "Summary must be at least 10 characters"),
-  caseStudy: z.string().min(20, "Case study must be at least 20 characters"),
-  metrics: z.array(MetricItemSchema).optional().default([]),
-});
-
-export const ProjectFormSchema = z.object({
-  slug: z
-    .string()
-    .min(2, "Slug must be at least 2 characters")
-    .regex(/^[a-z0-9-]+$/, "Slug must only contain lowercase letters, numbers, and hyphens"),
-  featured: z.boolean().default(false),
-  order: z.coerce.number().int().default(0),
-  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).default("DRAFT"),
-  repoUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  liveUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  tags: z.array(z.string()).default([]),
-  mediaIds: z.array(z.string()).default([]),
-  en: ProjectTranslationSchema,
-  id: ProjectTranslationSchema,
-});
-
-export type ProjectFormData = z.infer<typeof ProjectFormSchema>;
+import { ProjectFormSchema, type ProjectFormData } from "@/schemas";
 
 export async function getProjectsAdminAction() {
   await requireAdminSession();

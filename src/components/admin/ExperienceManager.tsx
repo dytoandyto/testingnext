@@ -3,9 +3,8 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ExperienceFormSchema, type ExperienceFormData } from "@/schemas";
 import {
-  ExperienceFormSchema,
-  ExperienceFormData,
   createExperienceAction,
   updateExperienceAction,
   deleteExperienceAction,

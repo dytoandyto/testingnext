@@ -1,31 +1,11 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { createContentRevision } from "@/lib/revisions";
 import { revalidatePath, updateTag } from "next/cache";
-
-const ExperienceTranslationSchema = z.object({
-  role: z.string().min(2, "Role must be at least 2 characters"),
-  description: z.string().min(10, "Description must be at least 10 characters"),
-  highlights: z.array(z.string()).default([]),
-});
-
-export const ExperienceFormSchema = z.object({
-  startDate: z.string().min(4, "Start date is required"),
-  endDate: z.string().optional().or(z.literal("")),
-  isCurrent: z.boolean().default(false),
-  organization: z.string().min(2, "Organization is required"),
-  location: z.string().min(2, "Location is required"),
-  order: z.coerce.number().int().default(0),
-  status: z.enum(["DRAFT", "PUBLISHED", "ARCHIVED"]).default("PUBLISHED"),
-  en: ExperienceTranslationSchema,
-  id: ExperienceTranslationSchema,
-});
-
-export type ExperienceFormData = z.infer<typeof ExperienceFormSchema>;
+import { ExperienceFormSchema, type ExperienceFormData } from "@/schemas";
 
 export async function getExperiencesAdminAction() {
   await requireAdminSession();

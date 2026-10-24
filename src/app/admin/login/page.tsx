@@ -81,10 +81,14 @@ export default function AdminLoginPage() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
-                <label className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase">
+                <label
+                  htmlFor="admin-email"
+                  className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase"
+                >
                   Admin Identifier
                 </label>
                 <Input
+                  id="admin-email"
                   name="email"
                   type="email"
                   placeholder="admin@indie-realm.io"
@@ -95,10 +99,14 @@ export default function AdminLoginPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase">
+                <label
+                  htmlFor="admin-password"
+                  className="font-mono text-xs tracking-wider text-[var(--realm-text-primary)] uppercase"
+                >
                   Master Cipher
                 </label>
                 <Input
+                  id="admin-password"
                   name="password"
                   type="password"
                   placeholder="••••••••••••"

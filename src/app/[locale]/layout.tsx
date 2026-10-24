@@ -7,6 +7,8 @@ import { Footer } from "@/components/navigation/Footer";
 import { Breadcrumbs } from "@/components/navigation/Breadcrumbs";
 import { getPublicActiveTheme } from "@/services/public-queries";
 
+import { LocaleLangSync } from "@/components/navigation/LocaleLangSync";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -32,6 +34,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      <LocaleLangSync locale={locale} />
       {activeTheme && (
         <style id="sanctuary-active-theme">{`
           :root {

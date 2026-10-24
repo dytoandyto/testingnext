@@ -70,10 +70,14 @@ export function ContactForm({
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <div className="space-y-1.5">
-        <label className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block">
+        <label
+          htmlFor="contact-name"
+          className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block"
+        >
           {nameLabel}
         </label>
         <Input
+          id="contact-name"
           {...register("name", { required: "Name is required" })}
           placeholder="e.g. Commander Ada Lovelace"
           className="text-xs"
@@ -84,10 +88,14 @@ export function ContactForm({
       </div>
 
       <div className="space-y-1.5">
-        <label className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block">
+        <label
+          htmlFor="contact-email"
+          className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block"
+        >
           {emailLabel}
         </label>
         <Input
+          id="contact-email"
           type="email"
           {...register("email", { required: "Email is required" })}
           placeholder="ada@analytical-engine.io"
@@ -99,10 +107,14 @@ export function ContactForm({
       </div>
 
       <div className="space-y-1.5">
-        <label className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block">
+        <label
+          htmlFor="contact-message"
+          className="font-mono text-xs tracking-wider text-[var(--realm-text-secondary)] uppercase block"
+        >
           {messageLabel}
         </label>
         <Textarea
+          id="contact-message"
           {...register("message", { required: "Message is required" })}
           placeholder="Describe your expedition, technical requirements, or collaboration vision..."
           rows={5}

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { ProjectFormSchema, setProjectStatusAction } from "@/actions/project-actions";
+import { ProjectFormSchema } from "@/schemas";
+import { setProjectStatusAction } from "@/actions/project-actions";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 

@@ -1,24 +1,10 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { revalidatePath, updateTag } from "next/cache";
-
-const HexColor = z.string().regex(/^#[0-9a-fA-F]{6}$/, "Must be a valid 6-character hex color (e.g. #0d131a)");
-
-export const ThemePresetFormSchema = z.object({
-  name: z.string().min(2, "Theme name is required"),
-  bgPrimary: HexColor,
-  bgSurface: HexColor,
-  bgCard: HexColor,
-  border: HexColor,
-  amber: HexColor,
-  moss: HexColor,
-  clay: HexColor,
-  parchment: HexColor,
-});
+import { ThemePresetFormSchema, type ThemePresetFormData } from "@/schemas";
 
 export async function getThemePresetsAdminAction() {
   await requireAdminSession();
@@ -28,7 +14,7 @@ export async function getThemePresetsAdminAction() {
   });
 }
 
-export async function createThemePresetAction(input: z.infer<typeof ThemePresetFormSchema>) {
+export async function createThemePresetAction(input: ThemePresetFormData) {
   const admin = await requireAdminSession();
   const validated = ThemePresetFormSchema.parse(input);
 
@@ -51,7 +37,7 @@ export async function createThemePresetAction(input: z.infer<typeof ThemePresetF
   return { success: true, preset };
 }
 
-export async function updateThemePresetAction(id: string, input: z.infer<typeof ThemePresetFormSchema>) {
+export async function updateThemePresetAction(id: string, input: ThemePresetFormData) {
   const admin = await requireAdminSession();
   const validated = ThemePresetFormSchema.parse(input);
 

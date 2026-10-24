@@ -1,23 +1,15 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { revalidatePath, updateTag } from "next/cache";
-
-export const CategoryFormSchema = z.object({
-  name: z.string().min(2, "Category name is required"),
-  iconName: z.string().default("Globe"),
-  order: z.coerce.number().int().default(0),
-});
-
-export const SkillFormSchema = z.object({
-  categoryId: z.string().min(1, "Category is required"),
-  name: z.string().min(2, "Skill name is required"),
-  proficiency: z.coerce.number().min(0).max(100).default(80),
-  order: z.coerce.number().int().default(0),
-});
+import {
+  CategoryFormSchema,
+  SkillFormSchema,
+  type CategoryFormData,
+  type SkillFormData,
+} from "@/schemas";
 
 export async function getSkillCategoriesAdminAction() {
   await requireAdminSession();
@@ -32,7 +24,7 @@ export async function getSkillCategoriesAdminAction() {
   });
 }
 
-export async function createSkillCategoryAction(input: z.infer<typeof CategoryFormSchema>) {
+export async function createSkillCategoryAction(input: CategoryFormData) {
   const admin = await requireAdminSession();
   const validated = CategoryFormSchema.parse(input);
 
@@ -54,7 +46,7 @@ export async function createSkillCategoryAction(input: z.infer<typeof CategoryFo
   return { success: true, category };
 }
 
-export async function updateSkillCategoryAction(id: string, input: z.infer<typeof CategoryFormSchema>) {
+export async function updateSkillCategoryAction(id: string, input: CategoryFormData) {
   const admin = await requireAdminSession();
   const validated = CategoryFormSchema.parse(input);
 
@@ -96,7 +88,7 @@ export async function deleteSkillCategoryAction(id: string) {
   return { success: true, deletedId: id };
 }
 
-export async function createSkillAction(input: z.infer<typeof SkillFormSchema>) {
+export async function createSkillAction(input: SkillFormData) {
   const admin = await requireAdminSession();
   const validated = SkillFormSchema.parse(input);
 
@@ -118,7 +110,7 @@ export async function createSkillAction(input: z.infer<typeof SkillFormSchema>) 
   return { success: true, skill };
 }
 
-export async function updateSkillAction(id: string, input: z.infer<typeof SkillFormSchema>) {
+export async function updateSkillAction(id: string, input: SkillFormData) {
   const admin = await requireAdminSession();
   const validated = SkillFormSchema.parse(input);
 

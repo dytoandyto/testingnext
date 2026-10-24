@@ -1,35 +1,16 @@
 "use server";
 
-import { z } from "zod";
 import { db } from "@/lib/db";
 import { requireAdminSession } from "@/lib/auth/guards";
 import { recordAuditLog } from "@/lib/audit";
 import { createContentRevision } from "@/lib/revisions";
 import { revalidatePath, updateTag } from "next/cache";
-
-export const WorldSceneFormSchema = z.object({
-  name: z.string().min(2, "Scene name is required"),
-  fogColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Must be a valid hex color"),
-  fogDensity: z.coerce.number().min(0).max(0.1),
-  ambientLightColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Must be a valid hex color"),
-  ambientLightIntensity: z.coerce.number().min(0).max(5),
-  sunLightColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Must be a valid hex color"),
-  sunLightIntensity: z.coerce.number().min(0).max(5),
-  bloomIntensity: z.coerce.number().min(0).max(2),
-});
-
-export const WorldPortalFormSchema = z.object({
-  sceneId: z.string().min(1, "Scene ID is required"),
-  targetRoute: z.string().min(1, "Target route is required"),
-  posX: z.coerce.number(),
-  posY: z.coerce.number(),
-  posZ: z.coerce.number(),
-  rotY: z.coerce.number().default(0),
-  labelEn: z.string().min(1, "English label is required"),
-  labelId: z.string().min(1, "Indonesian label is required"),
-  active: z.boolean().default(true),
-  order: z.coerce.number().int().default(0),
-});
+import {
+  WorldSceneFormSchema,
+  WorldPortalFormSchema,
+  type WorldSceneFormData,
+  type WorldPortalFormData,
+} from "@/schemas";
 
 export async function getWorldSceneAdminAction() {
   await requireAdminSession();
@@ -64,7 +45,7 @@ export async function getWorldSceneAdminAction() {
   return scene;
 }
 
-export async function updateWorldSceneAction(id: string, input: z.infer<typeof WorldSceneFormSchema>) {
+export async function updateWorldSceneAction(id: string, input: WorldSceneFormData) {
   const admin = await requireAdminSession();
   const validated = WorldSceneFormSchema.parse(input);
 
@@ -98,7 +79,7 @@ export async function updateWorldSceneAction(id: string, input: z.infer<typeof W
   return { success: true, scene };
 }
 
-export async function createWorldPortalAction(input: z.infer<typeof WorldPortalFormSchema>) {
+export async function createWorldPortalAction(input: WorldPortalFormData) {
   const admin = await requireAdminSession();
   const validated = WorldPortalFormSchema.parse(input);
 
@@ -123,7 +104,7 @@ export async function createWorldPortalAction(input: z.infer<typeof WorldPortalF
   return { success: true, portal };
 }
 
-export async function updateWorldPortalAction(id: string, input: z.infer<typeof WorldPortalFormSchema>) {
+export async function updateWorldPortalAction(id: string, input: WorldPortalFormData) {
   const admin = await requireAdminSession();
   const validated = WorldPortalFormSchema.parse(input);
 
