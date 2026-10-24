@@ -1,9 +1,13 @@
 import * as React from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { Card } from "@/components/ui/card";
-import { Palette } from "lucide-react";
+import { getThemePresetsAdminAction } from "@/actions/theme-actions";
+import { ThemeManager } from "@/components/admin/ThemeManager";
 
-export default function AdminThemePage() {
+export const dynamic = "force-dynamic";
+
+export default async function AdminThemePage() {
+  const presets = await getThemePresetsAdminAction();
+
   return (
     <div className="flex flex-1 flex-col">
       <AdminHeader
@@ -12,18 +16,7 @@ export default function AdminThemePage() {
       />
 
       <main className="flex-1 space-y-6 p-6 sm:p-8">
-        <div className="flex items-center gap-2">
-          <Palette className="h-5 w-5 text-[var(--realm-amber)]" />
-          <span className="text-sm font-semibold">Active Theme Preset: Slate Obsidian & Amber</span>
-        </div>
-
-        <Card className="space-y-4 p-6">
-          <p className="text-xs text-[var(--realm-text-secondary)]">
-            Token engine connected to CSS variables (`--realm-*`). In Phase 6, color palette presets
-            (Obsidian Slate, Ancient Parchment, Moss Canopy) will update directly through the
-            database without code redeployments.
-          </p>
-        </Card>
+        <ThemeManager initialPresets={presets as any} />
       </main>
     </div>
   );

@@ -49,11 +49,8 @@ export async function getObject(key: string) {
   const streamToBuffer = async (stream: unknown): Promise<Buffer> => {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (stream as any).on("data", (chunk: Buffer) => chunks.push(Buffer.from(chunk)));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (stream as any).on("error", (err: unknown) => reject(err));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (stream as any).on("end", () => resolve(Buffer.concat(chunks)));
     });
   };
